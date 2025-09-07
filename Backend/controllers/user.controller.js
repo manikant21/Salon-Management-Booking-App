@@ -28,13 +28,13 @@ export const registerUser = async (req, res, next) => {
     }
 
     
-    const existingPhone = await User.findOne({ where: { phoneNo } });
-    if (existingPhone) {
-      return res.status(400).json({
-        success: false,
-        message: "Phone number is already registered",
-      });
-    }
+    // const existingPhone = await User.findOne({ where: { phoneNo } });
+    // if (existingPhone) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Phone number is already registered",
+    //   });
+    // }
 
     
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -62,7 +62,9 @@ export const registerUser = async (req, res, next) => {
         age: newUser.age,
         status: newUser.status,
       },
-      token: generateAccessToken(newUser.id, newUser.username)
+      token: generateAccessToken(newUser.id, newUser.username),
+      userId: newUser.id,
+      name: newUser.username
     });
   } catch (err) {
     console.error("Error registering user:", err);
@@ -85,7 +87,7 @@ export const loginUser = async (req, res, next) => {
          if (!isMatch) {
             return res.status(401).json({ success: false, msg: "User not authorized" });
         }
-        return res.status(200).json({success: true, msg: "User login sucessful", user_id:user.id, token: generateAccessToken(user.id, user.name)});
+        return res.status(200).json({success: true, msg: "User login sucessful", userId:user.id, token: generateAccessToken(user.id, user.name), name: user.username});
     } catch (err) {
         console.error("Error login user:", err);
         next(err); 
