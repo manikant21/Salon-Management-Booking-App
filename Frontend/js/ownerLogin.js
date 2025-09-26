@@ -27,7 +27,7 @@ form.addEventListener('submit', async(e) => {
     try {
         const response = await axios.post(`${BASE_URL}/owner/loginOwner`, loginData);
         console.log(response);
-         if(response.status==201) {
+         if(response.status==200) {
             alert("Successfuly logged in");
               localStorage.setItem("token", response.data.token);
               localStorage.setItem("ownerId", response.data.ownerId);

@@ -28,4 +28,7 @@ Specialization.belongsToMany(Staff, {
   otherKey: "staff_id"
 });
 
+Salon.hasMany(Specialization, { foreignKey: "salon_id", onDelete: "CASCADE" });
+Specialization.belongsTo(Salon, { foreignKey: "salon_id" });
+
 export {Salon, Service, SalonOwner, StaffSpecialization, Specialization, Staff, User};

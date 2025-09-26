@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Salon Page</title>
+</head>
+
+<body class="bg-gray-100 p-6">
+
+     <header class="bg-white shadow p-4">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold">Salon Management App</h1>
+            <p class="text-sm text-gray-600">Welcome Owner!</p>
+        </div>
+        <div class="ml-[90%] mt-4">
+            <!-- <button id="addSalonBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Salon</button> -->
+            <button id="logout_btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+        </div>
+    </header>
+    <div id="salonDetails" class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-4"></div>
+
+    <div id="servicesSection" class="p-6 ">
+        <h2 class="text-xl font-bold mb-4">Services</h2>
+        <button id="openServiceModal" class="bg-blue-500 text-white px-4 py-2 rounded">
+            + Add Service
+        </button>
+        <div id="servicesList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <!-- Services will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div id="serviceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-96 shadow-lg">
+            <h2 class="text-lg font-bold mb-4">Add Service</h2>
+            <form id="serviceForm">
+
+                <!-- Service Name -->
+                <label class="block text-sm font-medium">Service Name</label>
+                <input type="text" id="service_name" placeholder="e.g., Haircut" class="w-full mb-3 p-2 border rounded"
+                    required>
+
+                <!-- Description -->
+                <label class="block text-sm font-medium">Description of Service</label>
+                <textarea id="description" placeholder="About service"
+                    class="w-full mb-3 p-2 border rounded"></textarea>
+
+                <!-- Duration -->
+                <label class="block text-sm font-medium">Duration</label>
+                <input type="number" id="duration" class="w-full mb-3 p-2 border rounded" required>
+
+                <!-- Price -->
+                <label class="block text-sm font-medium">Price</label>
+                <input type="number" id="price" class="w-full mb-3 p-2 border rounded">
+
+                <!-- Open Time -->
+                <label class="block text-sm font-medium">Open Time</label>
+                <input type="time" id="open_time_for_services" class="w-full mb-3 p-2 border rounded">
+
+                <!-- Close Time -->
+                <label class="block text-sm font-medium">Close Time</label>
+                <input type="time" id="close_time_for_services" class="w-full mb-3 p-2 border rounded">
+
+                <!-- Active Toggle -->
+                <label class="flex items-center space-x-2 mb-3">
+                    <input type="checkbox" id="is_active" checked>
+                    <span>Active</span>
+                </label>
+
+                <!-- Buttons -->
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeServiceModal" class="px-4 py-2 bg-gray-300 rounded">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Staff Section -->
+    <div id="staffSection" class="p-6">
+        <h2 class="text-xl font-bold mb-4">Staff</h2>
+        <button id="openStaffModal" class="bg-green-500 text-white px-4 py-2 rounded">
+            + Add Staff
+        </button>
+        <div id="staffList" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <!-- Staff will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Staff Modal -->
+    <div id="staffModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-96 shadow-lg">
+            <h2 class="text-lg font-bold mb-4">Add Staff</h2>
+            <form id="staffForm">
+                <label class="block text-sm font-medium">Name</label>
+                <input type="text" id="staff_name" class="w-full mb-3 p-2 border rounded" required>
+
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" id="staff_email" class="w-full mb-3 p-2 border rounded" required>
+
+                <label class="block text-sm font-medium">Phone No</label>
+                <input type="text" id="staff_phone" class="w-full mb-3 p-2 border rounded" required>
+
+                <label class="flex items-center space-x-2 mb-3">
+                    <input type="checkbox" id="staff_is_active" checked>
+                    <span>Active</span>
+                </label>
+
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeStaffModal" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <button id="createSpecBtn" class="px-4 py-2 bg-blue-500 text-white rounded">
+  + Create Specialization
+</button>
+
+
+    <!-- Create Spec -->
+    <div id="createSpecModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-80 shadow-lg">
+            <h2 class="text-lg font-bold mb-4">Create Specialization</h2>
+            <form id="createSpecForm">
+                <input type="text" id="specName" placeholder="Specialization Name"
+                    class="w-full border p-2 mb-4 rounded">
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeSpecModal" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Specialization Modal -->
+    <div id="specializationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-96 shadow-lg">
+            <h2 class="text-lg font-bold mb-4">Assign Specializations</h2>
+            <form id="specializationForm">
+                <div id="specializationList" class="mb-4">
+                    <!-- Checkboxes loaded dynamically -->
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeSpecializationModal"
+                        class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="../js/salon.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from 'cookie-parser';
-import { sequelize } from "./config/db.config.js";
+import  sequelize  from "./config/db.config.js";
 import { PORT } from "./config/server.config.js"
 import {router as apiRoute} from "./routes/index.js";
 import { errorHandler } from "./middlewares/errorHandler.js";

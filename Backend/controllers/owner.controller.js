@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 import SalonOwner from "../models/owner.model.js";
 import { JWT_SECRET } from "../config/server.config.js";
 
 function generateAccessToken(id, name) {
-    return jwt.sign({userId: id, name: name}, JWT_SECRET)
+    return jwt.sign({ownerId: id, name: name}, JWT_SECRET)
 }
 
 export const registerOwner = async (req, res, next) => {
@@ -88,3 +89,5 @@ export const loginOwner = async (req, res, next) => {
         next(err); 
     }
 }
+
+

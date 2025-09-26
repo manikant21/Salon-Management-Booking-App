@@ -11,10 +11,24 @@ const Specialization = sequelize.define("Specialization", {
     type: DataTypes.STRING, 
     allowNull: false, 
     unique: true 
-}
+},
+  salon_id: {   
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+   is_active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
 }, {
   timestamps: true,
-  tableName: "specialization"
+  tableName: "specialization",
+  uniqueKeys: {
+  unique_specialization_per_salon: {
+    fields: ["salon_id", "name"]
+  }
+}
+
 });
 
 export default Specialization;

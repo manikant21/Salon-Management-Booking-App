@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow p-4">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold">Salon Management App</h1>
+            <p class="text-sm text-gray-600">Welcome Owner!</p>
+        </div>
+        <div class="flex justify-between items-center mt-4">
+            <button id="addSalonBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Salon</button>
+            <button id="logout_btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content (Initially Hidden) -->
+    <div id="salonFormContainer" class="max-w-lg mx-auto bg-white shadow-lg rounded-2xl p-6 mt-6 hidden">
+        <h2 class="text-xl font-bold mb-4">Add Salon</h2>
+
+        <form id="salonForm" class="space-y-4">
+            <input type="text" id="name" placeholder="Salon Name" class="w-full border p-2 rounded" required />
+
+            <textarea id="description" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+
+            <!-- <input type="file" id="image" class="w-full border p-2 rounded" /> -->
+            <div id="imageWrapper">
+                <input type="file" id="image" class="w-full border p-2 rounded" />
+            </div>
+
+            <input type="text" id="location" placeholder="Location" class="w-full border p-2 rounded" required />
+
+            <div class="flex gap-2">
+                <input type="time" id="open_time" class="border p-2 rounded w-1/2" required />
+                <input type="time" id="close_time" class="border p-2 rounded w-1/2" required />
+            </div>
+
+            <label class="flex items-center gap-2">
+                <input type="checkbox" id="is_active" checked /> Active
+            </label>
+
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full">
+                Save Salon
+            </button>
+
+            <button id="cancel_btn" type="button" class="bg-red-600 text-white px-4 py-2 rounded w-full">
+                Cancel
+            </button>
+        </form>
+    </div>
+
+    <section class="p-6">
+        <h2 class="text-2xl mb-5 font-bold text-center mt-3">My Salons</h2>
+        <div id="salonList" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Salon cards will be injected here -->
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="../js/ownerHome.js"></script>
+
+    <script>
+        // Toggle form visibility
+        document.getElementById("addSalonBtn").addEventListener("click", () => {
+            document.getElementById("salonFormContainer").classList.toggle("hidden");
+        });
+    </script>
+</body>
+
+</html>

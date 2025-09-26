@@ -2,46 +2,50 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/db.config.js";
 
 const Salon = sequelize.define("Salon", {
-  id: { 
-    type: DataTypes.INTEGER, 
-    autoIncrement: true, 
-    primaryKey: true 
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
     },
-  owner_id: { 
-    type: DataTypes.INTEGER, 
-    allowNull: false 
+    owner_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     },
-  name: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-  description: { 
-    type: DataTypes.TEXT, 
-    allowNull: false 
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: false
     },
-  image: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
+    image: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-  open_time: { 
-    type: DataTypes.TIME, 
-    allowNull: false 
+    open_time: {
+        type: DataTypes.TIME,
+        allowNull: false
     },
-  close_time: { 
-    type: DataTypes.TIME, 
-    allowNull: false
+    close_time: {
+        type: DataTypes.TIME,
+        allowNull: false
     },
-  is_active: { 
-    type: DataTypes.BOOLEAN, 
-    defaultValue: true 
+    is_active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     },
-  location: { 
-    type: DataTypes.STRING, 
-    allowNull: false 
+    location: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    averageRating: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0.0
     }
 }, {
-  timestamps: true,
-  tableName: "salon"
+    timestamps: true,
+    tableName: "salon"
 });
 
 export default Salon;
