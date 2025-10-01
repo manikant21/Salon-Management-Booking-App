@@ -55,3 +55,7 @@ form.addEventListener('submit', async(e) => {
 
 })
 
+document.getElementById("back_btn").addEventListener('click', ()=> {
+    window.location.href='../index.html';
+})
+

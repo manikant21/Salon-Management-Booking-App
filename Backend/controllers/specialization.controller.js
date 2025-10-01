@@ -31,3 +31,14 @@ export const getSpecialization = async (req, res, next) => {
         next(err);
     }
 }
+
+export const getSpecializationsBySalon = async (req, res, next) => {
+  try {
+    const specs = await Specialization.findAll({ where: { salon_id: req.params.salonId } });
+    res.json(specs);
+  } catch (err) {
+    console.error("Error in getting specialization in salon:", err);
+        next(err);
+    // res.status(500).json({ error: err.message });
+  }
+};

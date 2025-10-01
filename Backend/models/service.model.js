@@ -31,11 +31,11 @@ const Service = sequelize.define(
     },
     open_time_for_services: {
       type: DataTypes.TIME,
-      allowNull: true,
+      allowNull: false,
     },
     close_time_for_services: {
       type: DataTypes.TIME,
-      allowNull: true,
+      allowNull: false,
     },
     is_active: {
       type: DataTypes.BOOLEAN,

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon Details</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="ml-[90%] mt-2">
+            <!-- <button id="addSalonBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Salon</button> -->
+            <button id="logout_btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+    </div>
+  <div class="container mx-auto p-6">
+    <!-- Salon Info -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h1 id="salonName" class="text-2xl font-bold mb-2">Loading...</h1>
+      <p id="salonAddress" class="text-gray-600">Loading...</p>
+      <p id="salonRating" class="text-yellow-500 font-semibold">⭐ N/A</p>
+    </div>
+
+<!-- Services -->
+<div class="bg-white shadow-md rounded-lg p-6 mb-6">
+  <h2 class="text-xl font-bold mb-4">Services</h2>
+  <div id="servicesList" class="space-y-3">
+    <!-- Services dynamically rendered -->
+  </div>
+</div>
+
+<!-- Specializations -->
+<div class="bg-white shadow-md rounded-lg p-6 mb-6">
+  <h2 class="text-xl font-bold mb-4">Specializations</h2>
+  <div id="specializationsList" class="flex flex-wrap gap-2">
+    <!-- Specializations dynamically rendered -->
+  </div>
+</div>
+
+<!-- Booking Section -->
+<div class="bg-white shadow-md rounded-lg p-6">
+  <h2 class="text-xl font-bold mb-4">Book an Appointment</h2>
+  <form id="bookingForm" class="space-y-4">
+    <!-- Select Service -->
+    <div>
+      <label for="serviceSelect" class="block text-gray-700 mb-1">Service</label>
+      <select id="serviceSelect" class="w-full border p-2 rounded">
+        <option value="">Select Service</option>
+      </select>
+    </div>
+
+    <!-- Select Staff -->
+    <div>
+      <label for="staffSelect" class="block text-gray-700 mb-1">Staff </label>
+      <select id="staffSelect" class="w-full border p-2 rounded">
+        <option value="">Select Staff</option>
+      </select>
+    </div>
+
+    <!-- Select Date -->
+    <div>
+      <label for="datePicker" class="block text-gray-700 mb-1">Select Date</label>
+      <input type="date" id="datePicker" class="w-full border p-2 rounded">
+    </div>
+
+    <!-- Available Slots -->
+    <div>
+      <label class="block text-gray-700 mb-1">Available Slots</label>
+      <div id="slotsContainer" class="flex flex-wrap gap-2">
+        <!-- Time slots dynamically rendered -->
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+      Confirm Booking
+    </button>
+  </form>
+</div>
+
+
+  </div>
+
+  <!-- Scripts -->
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script type="module" src="../js/salonUser.js"></script>
+
+</body>
+
+</html>

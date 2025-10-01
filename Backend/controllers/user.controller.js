@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
+import Salon from "../models/salon.model.js";
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from "../config/server.config.js";
 
@@ -28,16 +29,7 @@ export const registerUser = async (req, res, next) => {
       });
     }
 
-    
-    // const existingPhone = await User.findOne({ where: { phoneNo } });
-    // if (existingPhone) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Phone number is already registered",
-    //   });
-    // }
-
-    
+     
     const hashedPassword = await bcrypt.hash(password, 10);
 
    
@@ -93,4 +85,19 @@ export const loginUser = async (req, res, next) => {
         console.error("Error login user:", err);
         next(err); 
     }
+}
+
+export const getAvailableSalon =  async (req, res, next) => {
+  try {
+    const salons = await Salon.findAll({
+      attributes: ["id", "name", "description", "location", "open_time", "close_time", "image", "is_active"],
+      order: [["createdAt", "DESC"]],
+    });
+    console.log(salons);
+    res.status(200).json({salons});
+    
+  } catch (err) {
+    console.error("Error in fetching salon:", err);
+    next(err); 
+  }
 }

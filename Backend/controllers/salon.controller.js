@@ -2,7 +2,9 @@ import Salon from "../models/salon.model.js";
 import Service from "../models/service.model.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3, S3_BUCKET } from "../config/s3.config.js";
-import { AWS_REGION } from "../config/server.config.js"
+import { AWS_REGION } from "../config/server.config.js";
+import { Op } from "sequelize";
+
 
 
 export const registerSalon = async (req, res, next) => {
@@ -178,7 +180,7 @@ export const updatedData = (req, res, next) => {
     }
 }
 
-export const deleteSalon =async (req, res, next) => {
+export const deleteSalon = async (req, res, next) => {
     try {
         const salonId = req.params.salonId;
         const salon = await Salon.findOne({
@@ -186,7 +188,7 @@ export const deleteSalon =async (req, res, next) => {
                 id: salonId
             }
         })
-        if( !salon) {
+        if (!salon) {
             return res.status(404).json({ error: "Salon not found" });
         }
         await Salon.destroy({
@@ -194,7 +196,7 @@ export const deleteSalon =async (req, res, next) => {
                 id: salonId
             }
         })
-        res.status(200).json({ msg: "Salon deleted Successfully"});
+        res.status(200).json({ msg: "Salon deleted Successfully" });
     } catch (err) {
         console.error("Error in deleteing salon:", err);
         next(err);
@@ -209,10 +211,10 @@ export const getSalonDetailForEdit = async (req, res, next) => {
                 id: salonId
             }
         })
-         if( !salon) {
+        if (!salon) {
             return res.status(404).json({ error: "Salon not found" });
         }
-        res.status(200).json({salon});
+        res.status(200).json({ salon });
     } catch (err) {
         console.error("Error in  fetching salon detail for editing:", err);
         next(err);
@@ -221,26 +223,103 @@ export const getSalonDetailForEdit = async (req, res, next) => {
 
 export const updateSalonData = async (req, res, next) => {
     try {
-         const salonId = req.params.salonId;
+        const salonId = req.params.salonId;
         const { name, description, location, open_time, close_time, is_active } = req.body;
         // const ownerId = req.owner.id;
-         const salon = await Salon.update({
+        const salon = await Salon.update({
             name,
             description,
             location,
             open_time,
             close_time,
             is_active
-        },{
+        }, {
             where: {
                 id: salonId
             }
         });
 
-        res.status(201).json({salon });
+        res.status(201).json({ salon });
 
     } catch (err) {
         console.error("Error in  updateing salon detail after editing:", err);
         next(err);
     }
 }
+
+
+export const getSalonById = async (req, res, next) => {
+    try {
+        const salon = await Salon.findByPk(req.params.salonId);
+        if (!salon) return res.status(404).json({ message: "Salon not found" });
+        res.json(salon);
+    } catch (err) {
+        console.error("Error in getting salon detail", err);
+        next(err);
+    }
+}
+
+export const getServicesBySalon = async (req, res, next) => {
+    try {
+        const services = await Service.findAll({ where: { salon_id: req.params.salonId } });
+        res.json(services);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export const getSpecializationsBySalon = async (req, res) => {
+    try {
+        const specs = await Specialization.findAll({ where: { salon_id: req.params.salonId } });
+        res.json(specs);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// export const searchByServiceName = async (req, res, next) => {
+//     try {
+//         const { name } = req.query;
+
+//         if (!name) {
+//             return res.status(400).json({ error: "Service name is required" });
+//         }
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).json({ error: err.message });
+//     }
+// }
+
+
+export const searchByServiceName = async (req, res, next) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.status(400).json({ error: "Service name is required" });
+    }
+
+    const services = await Service.findAll({
+      where: {
+        service_name: { [Op.like]: `%${name}%` },
+      },
+      include: [
+        {
+          model: Salon,
+          attributes: ["id", "name", "location", "description", "open_time", "close_time", "image", "is_active"], 
+        },
+      ],
+    });
+
+    if (!services.length) {
+      return res.status(404).json({ message: "No salons found for this service" });
+    }
+
+    res.json(services);
+  } catch (err) {
+    console.error(err);
+    next();
+    // res.status(500).json({ error: "Server error while searching services" });
+
+  }
+};

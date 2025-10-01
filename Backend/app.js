@@ -5,6 +5,8 @@ import { PORT } from "./config/server.config.js"
 import {router as apiRoute} from "./routes/index.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import cors from "cors";
+import './services/reminderMailAlert.js'
+import './services/checkBookingStatus.js';
 
 
 const app = express();

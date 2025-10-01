@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserHome</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow p-4">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold">Salon Management App</h1>
+            <p class="text-sm text-gray-600">Welcome User!</p>
+        </div>
+        <div class="flex justify-between">
+        <div class="mt-4">
+            <!-- <button id="addSalonBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Salon</button> -->
+            <button id="booking_btn" class="bg-blue-600 text-white px-4 py-2 rounded">My Booking</button>
+        </div>
+        <div class="mt-4">
+            <!-- <button id="addSalonBtn" class="bg-green-600 text-white px-4 py-2 rounded">Add Salon</button> -->
+            <button id="logout_btn" class="bg-red-600 text-white px-4 py-2 rounded">Logout</button>
+        </div>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+     <div class="flex gap-2 items-center justify-center mt-2">
+        <input type="text" id="search" class="w-[25%] mb-3 p-2 border rounded" placeholder="Search Service..">
+        <button type="button" id="search_btn" class="px-4 py-2 bg-gray-300 rounded">Search</button>
+     </div>
+
+     <!-- Available Salon -->
+      <section class="p-6">
+        <h2 class="text-2xl mb-5 font-bold text-center mt-3">Available Salons</h2>
+        <div id="searchResults" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6 hidden"></div>
+        <div id="salonList" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Salon cards will be injected here -->
+        </div>
+    </section>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="../js/userHome.js"></script>
+</body>
+</html>

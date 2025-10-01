@@ -120,7 +120,7 @@ async function fetchServices() {
         <div class="border p-4 rounded shadow bg-white">
           <h3 class="text-lg font-semibold">${service.service_name}</h3>
           <p class="text-sm text-gray-600">${service.description || "No description"}</p>
-          <p><strong>Duration:</strong> ${service.duration} hr.</p>
+          <p><strong>Duration:</strong> ${service.duration} min.</p>
           <p><strong>Price:</strong> ${service.price} hr.</p>
           <p><strong>Open:</strong> ${service.open_time_for_services || "N/A"}</p>
           <p><strong>Close:</strong> ${service.close_time_for_services || "N/A"}</p>

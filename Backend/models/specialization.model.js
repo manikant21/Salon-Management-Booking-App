@@ -10,7 +10,6 @@ const Specialization = sequelize.define("Specialization", {
   name: { 
     type: DataTypes.STRING, 
     allowNull: false, 
-    unique: true 
 },
   salon_id: {   
     type: DataTypes.INTEGER,

@@ -20,7 +20,8 @@ cancel_btn.addEventListener('click', () => {
 
 
 document.getElementById("addSalonBtn").addEventListener("click", () => {
-  document.getElementById("salonFormContainer").classList.toggle("hidden");
+  console.log("clicked");
+  document.getElementById("salonFormContainer").classList.remove("hidden");
 
   // Reset to Add mode
   editMode = false;
@@ -50,8 +51,9 @@ document.getElementById("salonForm").addEventListener("submit", async (e) => {
       const res = await axios.put(`${BASE_URL}/salon/update/${editingSalonId}`, updatedData, {
         headers: { "Authorization": token }
       });
+      console.log(res);
 
-      if (res.status === 200) {
+      if (res.status == 201) {
         alert("Salon updated successfully!");
         document.getElementById("salonForm").reset();
         document.getElementById("salonFormContainer").classList.add("hidden");

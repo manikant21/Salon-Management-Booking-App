@@ -9,6 +9,8 @@ export const authenticateForUser = async (req, res, next) => {
         const token = req.header('Authorization');
         console.log(token);
         const user = jwt.verify(token, JWT_SECRET);
+        console.log("user");
+        console.log("Mani");
         console.log(user.userId);
         const users = await User.findByPk(user.userId);
         if(!users) {

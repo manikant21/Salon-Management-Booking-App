@@ -27,7 +27,7 @@ form.addEventListener('submit', async(e) => {
     try {
         const response = await axios.post(`${BASE_URL}/user/loginUser`, loginData);
         console.log(response);
-         if(response.status==201) {
+         if(response.status==200) {
             alert("Successfuly logged in");
               localStorage.setItem("token", response.data.token);
               localStorage.setItem("userId", response.data.userId);
@@ -53,5 +53,9 @@ form.addEventListener('submit', async(e) => {
             
     }
 
+})
+
+document.getElementById("back_btn").addEventListener('click', ()=> {
+    window.location.href='../index.html';
 })
 
