@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 text-white px-6 py-4 flex space-x-6">
+    <button class="nav-btn" data-section="users">Users</button>
+    <button class="nav-btn" data-section="owners">Owners</button>
+    <button class="nav-btn" data-section="salons">Salons</button>
+    <button class="nav-btn" data-section="staffs">Staffs</button>
+    <button class="nav-btn" data-section="bookings">Bookings</button>
+    <button class="nav-btn" data-section="review">Review & Rating</button>
+    <button id="logoutBtn" class="ml-auto bg-red-500 px-3 py-1 rounded">Logout</button>
+  </nav>
+
+  <!-- Main -->
+  <main class="p-6 max-w-6xl mx-auto">
+    <h2 id="title" class="text-2xl font-bold mb-4">Admin Dashboard</h2>
+    <div id="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </main>
+
+  <!-- Detail Modal -->
+<div id="detailModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white rounded-lg p-6 w-96 relative">
+    <button id="closeModal" class="absolute top-2 right-2 text-gray-500">✖</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+
+   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="../js/adminHome.js"></script>
+</body>
+</html>

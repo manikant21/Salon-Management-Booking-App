@@ -4,7 +4,12 @@ import { Sequelize } from "sequelize";
 export const createReview = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { booking_id, salon_rating, staff_rating, reviewForSalon, reviewForStaff } = req.body;
+    const { booking_id, salon_rating, staff_rating, reviewForSalon, reviewForStaff, salon_id, staff_id } = req.body;
+    if (!booking_id || !salon_rating || !staff_rating) {
+      console.log("fiels are missing")
+      return res.status(404).json({ success: false, message: "fiels are missing" });
+
+    }
 
     // 1. Validate rating range
     if (salon_rating < 1 || salon_rating > 5 || staff_rating < 1 || staff_rating > 5) {
@@ -22,6 +27,14 @@ export const createReview = async (req, res) => {
       return res.status(400).json({ success: false, message: "You can only review after booking is completed." });
     }
 
+    await Booking.update({
+      review_done: true
+    },
+      {
+        where: { id: booking_id },
+      },
+    )
+
     // 4. Check if review already exists for this booking
     const existingReview = await Review.findOne({ where: { booking_id } });
     if (existingReview) {
@@ -32,8 +45,8 @@ export const createReview = async (req, res) => {
     const review = await Review.create({
       booking_id,
       user_id: userId,
-      salon_id: booking.salon_id,
-      staff_id: booking.staff_id,
+      salon_id,
+      staff_id,
       salon_rating,
       staff_rating,
       reviewForSalon,
@@ -65,3 +78,16 @@ export const createReview = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+
+export const getReviewData = async (req, res, next) => {
+  try {
+    const { bookingId } = req.params;
+    const review = await Review.findOne({ where: { booking_id: bookingId } });
+    if (!review) return res.json({ review: null });
+    res.json({ review });
+  } catch (err) {
+    console.error("Error creating review:", err);
+    res.status(500).json({ success: false, message: "Review Data error" });
+  }
+}

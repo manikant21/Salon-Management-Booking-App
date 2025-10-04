@@ -66,10 +66,20 @@ async function loadBookings() {
           }" data-id="${b.id}" ${diffHours < 2 ? "disabled" : ""}>Reschedule</button>
         `;
       }
+      else if (b.review_done === true) {
+        actionsDiv.innerHTML = `
+            <button class="reviewBtn bg-pink-600 text-white px-3 py-1 rounded" 
+              data-id="${b.id}" 
+              data-salon="${b.Salon.id}" 
+              data-staff="${b.Staff?.id || ""}">
+              View Review
+            </button>
+          `;
+      }
 
       // --- Review Section (only when completed) ---
       else if (b.booking_status === "completed") {
-        if (!b.Review) {
+        if (b.review_done=== false) {
           // show review button
           actionsDiv.innerHTML = `
             <button class="reviewBtn bg-green-600 text-white px-3 py-1 rounded" 
@@ -128,16 +138,49 @@ function addEventListeners() {
   document.querySelectorAll(".rescheduleBtn").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedBookingId = btn.dataset.id;
+      
       rescheduleModal.classList.remove("hidden");
     });
   });
 
   // review buttons
   document.querySelectorAll(".reviewBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       selectedBookingId = btn.dataset.id;
+      console.log(selectedBookingId);
       selectedSalonId = btn.dataset.salon;
+      console.log(selectedSalonId);
       selectedStaffId = btn.dataset.staff;
+      console.log(selectedStaffId);
+      // Reset form first
+    reviewForm.reset();
+    [...reviewForm.elements].forEach(el => el.disabled = false); // enable all
+
+    try {
+      // Call API to fetch review for this booking
+      const res = await axios.get(`${BASE_URL}/review/${selectedBookingId}`, {
+        headers: { Authorization: token }
+      });
+
+      if (res.data.review) {
+        // Prefill form
+        document.getElementById("salonRating").value = res.data.review.salon_rating;
+        document.getElementById("staffRating").value = res.data.review.staff_rating;
+        document.getElementById("reviewForSalon").value = res.data.review.reviewForSalon || "";
+        document.getElementById("reviewForStaff").value = res.data.review.reviewForStaff || "";
+
+        // Make it read-only
+        [...reviewForm.elements].forEach(el => el.disabled = true);
+        // Keep close button enabled
+        closeReviewModalBtn.disabled = false;
+        document.getElementById("submitReviewBtn").classList.add("hidden");
+      }
+    } catch (err) {
+      // No review exists → just show empty form
+      console.log("No existing review, new review form will be shown");
+    }
+
+
       reviewModal.classList.remove("hidden");
     });
   });
@@ -177,11 +220,11 @@ reviewForm.addEventListener("submit", async (e) => {
 
   try {
     await axios.post(`${BASE_URL}/review/add`, {
-      bookingId: selectedBookingId,
-      salonId: selectedSalonId,
-      staffId: selectedStaffId,
-      salonRating,
-      staffRating,
+      booking_id: selectedBookingId,
+      salon_id: selectedSalonId,
+      staff_id: selectedStaffId,
+      salon_rating: salonRating,
+      staff_rating: staffRating,
       reviewForSalon,
       reviewForStaff
     }, { headers: { Authorization: token } });

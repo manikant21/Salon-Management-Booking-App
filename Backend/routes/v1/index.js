@@ -7,6 +7,7 @@ import {router as SpecializationRoute} from "./specialization.route.js";
 import {router as BookingRoute} from "./booking.route.js";
 import {router as PaymentRoute} from "./payment.route.js";
 import {router as ReviewRoute} from "./review.route.js";
+import {router as AdminRoute} from "./admin.route.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.use("/specializations", SpecializationRoute);
 router.use("/booking", BookingRoute);
 router.use("/payment", PaymentRoute);
 router.use("/review", ReviewRoute);
+router.use("/admin", AdminRoute);
 
 
 export {router};

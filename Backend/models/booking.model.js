@@ -25,7 +25,8 @@ const Booking = sequelize.define("Booking", {
         defaultValue: false
     },
     adminRemarks: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
     },
     booking_status: {
         type: DataTypes.ENUM("pending", "confirmed", "completed", "canceled"),
@@ -39,7 +40,10 @@ const Booking = sequelize.define("Booking", {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     },
-
+    review_done: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
     canceled_at: {
         type: DataTypes.DATE
     },

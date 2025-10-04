@@ -55,62 +55,132 @@ export const getAvailableSlots = async (req, res) => {
 
 
 
+// export const bookAppointment = async (req, res, next) => {
+//   try {
+//     const { salonId, serviceId, staffId, booking_date, booking_time } = req.body;
+//     const userId = req.user.id;
+
+//     // 1. Get service duration (assume in minutes)
+//     const service = await Service.findByPk(serviceId);
+//     if (!service) {
+//       return res.status(404).json({ message: "Service not found" });
+//     }
+
+//     const startTime = booking_time; // string like "14:00"
+//     const startDateTime = new Date(`${booking_date}T${startTime}:00`);
+
+//     const endDateTime = new Date(startDateTime.getTime() + service.duration * 60000);
+
+//     // 2. Check overlap with existing bookings for same staff
+//     const conflict = await Booking.findOne({
+//       where: {
+//         staff_id: staffId,
+//         booking_date,
+//         booking_status: "confirmed",
+//         [Op.or]: [
+//           {
+//             start_time: { [Op.lt]: endDateTime }, // existing start < new end
+//             end_time: { [Op.gt]: startDateTime }  // existing end > new start
+//           }
+//         ]
+//       }
+//     });
+
+//     if (conflict) {
+//       return res.status(400).json({
+//         message: "This staff already has a booking overlapping with the selected time"
+//       });
+//     }
+
+//     // 3. Save booking
+//     const newBooking = await Booking.create({
+//       user_id: userId,
+//       salon_id: salonId,
+//       service_id: serviceId,
+//       staff_id: staffId,
+//       booking_date,
+//       start_time: startDateTime,
+//       end_time: endDateTime,
+//       booking_status: "confirmed"
+//     });
+
+//     res.status(201).json({ success: true, booking: newBooking });
+
+//   } catch (err) {
+//     console.error("Error in booking appointment:", err);
+//     res.status(500).json({ message: "Error booking appointment" });
+//   }
+// };
+
+
 export const bookAppointment = async (req, res, next) => {
   try {
     const { salonId, serviceId, staffId, booking_date, booking_time } = req.body;
     const userId = req.user.id;
 
-    // 1. Get service duration (assume in minutes)
+    // 1. Get service duration
     const service = await Service.findByPk(serviceId);
     if (!service) {
       return res.status(404).json({ message: "Service not found" });
     }
 
-    const startTime = booking_time; // string like "14:00"
-    const startDateTime = new Date(`${booking_date}T${startTime}:00`);
-
+    // 2. Calculate requested booking time range
+    const startDateTime = new Date(`${booking_date}T${booking_time}:00`);
     const endDateTime = new Date(startDateTime.getTime() + service.duration * 60000);
 
-    // 2. Check overlap with existing bookings for same staff
-    const conflict = await Booking.findOne({
+    // 3. Fetch all confirmed bookings for the same staff & date
+    const existingBookings = await Booking.findAll({
       where: {
         staff_id: staffId,
         booking_date,
-        booking_status: "confirmed",
-        [Op.or]: [
-          {
-            start_time: { [Op.lt]: endDateTime }, // existing start < new end
-            end_time: { [Op.gt]: startDateTime }  // existing end > new start
-          }
-        ]
-      }
+        booking_status: "confirmed"
+      },
+      include: [Service] // so we can get each service duration
     });
 
-    if (conflict) {
-      return res.status(400).json({
-        message: "This staff already has a booking overlapping with the selected time"
-      });
+    // 4. Check overlap with each booking
+    for (let existing of existingBookings) {
+      const existingStart = new Date(`${existing.booking_date}T${existing.booking_time}:00`);
+      const existingEnd = new Date(existingStart.getTime() + existing.Service.duration * 60000);
+
+      if (startDateTime < existingEnd && endDateTime > existingStart) {
+        return res.status(400).json({
+          message: "This staff already has a booking overlapping with the selected time"
+        });
+      }
     }
 
-    // 3. Save booking
-    const newBooking = await Booking.create({
+
+    // 5. Save new booking
+    const booking = await Booking.create({
       user_id: userId,
       salon_id: salonId,
       service_id: serviceId,
       staff_id: staffId,
       booking_date,
-      start_time: startDateTime,
-      end_time: endDateTime,
-      booking_status: "confirmed"
+      booking_time,
+      duration: service.duration
+      // booking_status: "confirmed"
     });
 
-    res.status(201).json({ success: true, booking: newBooking });
+    res.status(201).json({ success: true, booking });
 
   } catch (err) {
     console.error("Error in booking appointment:", err);
-    res.status(500).json({ message: "Error booking appointment" });
+    next(err);
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 // bookingController.js
@@ -231,7 +301,7 @@ export const cancelBooking = async (req, res) => {
     }
 
     const now = new Date();
-    const bookingTime = new Date(booking.booking_date);
+    const bookingTime = new Date(`${booking.booking_date}T${booking.booking_time}:00`);
     const diffHours = (bookingTime - now) / (1000 * 60 * 60);
 
     if (diffHours < 4) {

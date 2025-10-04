@@ -18,7 +18,7 @@ router.get("/edit/:salonId", authenticateForOwner, getSalonDetailForEdit);
 router.put("/update/:salonId", authenticateForOwner, updateSalonData);
 router.get("/get/:salonId", authenticateForUser, getSalonById);
 router.get("/get/services/:salonId", authenticateForUser, getServicesBySalon);
-router.get("/services/search", authenticateForUser, searchByServiceName);
+router.get("/find/services/search", authenticateForUser, searchByServiceName);
 
 export {router};
 

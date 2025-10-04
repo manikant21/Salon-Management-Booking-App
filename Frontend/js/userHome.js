@@ -21,20 +21,20 @@ async function fetchSalons() {
     console.log(salons)
 
     const salonContainer = document.getElementById("salonList");
-    salonContainer.innerHTML = ""; // clear existing
+    salonContainer.innerHTML = ""; 
 
     salons.forEach(salon => {
       const card = document.createElement("div");
       card.className = "bg-white shadow-lg rounded-lg p-4 w-80 cursor-pointer hover:shadow-xl transition";
-      card.dataset.id = salon.id; // store id for click
+      card.dataset.id = salon.id;
         const salonId = card.dataset.id;
         console.log(salonId);
       card.innerHTML = `
         <img src="${salon.image}" alt="${salon.name}" class="h-40 w-full object-cover rounded-md mb-3"/>
         <h2 class="text-xl font-bold">${salon.name}</h2>
         <p class="text-gray-600">${salon.description}</p>
-        <p class="text-sm text-gray-500">📍 ${salon.location}</p>
-        <p class="text-sm text-gray-500">🕒 ${salon.open_time} - ${salon.close_time}</p>
+        <p class="text-sm text-gray-500"> ${salon.location}</p>
+        <p class="text-sm text-gray-500"> ${salon.open_time} - ${salon.close_time}</p>
         <span class="text-sm ${salon.is_active ? 'text-green-600' : 'text-red-600'}">
           ${salon.is_active ? "Active" : "Inactive"}
         </span>
@@ -65,7 +65,6 @@ function openSalonPage(salonId) {
 
 window.openSalonPage = openSalonPage;
 
-// document.addEventListener("DOMContentLoaded", fetchSalons);
 
 fetchSalons();
 
@@ -75,8 +74,9 @@ document.getElementById("search_btn").addEventListener('click', async()=> {
     if(searchService=="") {
         return alert("Please type service to be search");
     }
+   
     try {
-        const res = await axios.get(`${BASE_URL}/salon/services/search?name=${searchService}`, {
+        const res = await axios.get(`${BASE_URL}/salon/find/services/search?name=${searchService}`, {
               headers: {
         "Authorization": token
       }
@@ -84,10 +84,10 @@ document.getElementById("search_btn").addEventListener('click', async()=> {
     console.log(res);
     document.getElementById("salonList").innerHTML="";
     document.getElementById("salonList").classList.add("hidden");
-    const resultsDiv = document.getElementById("searchResults");
+     const resultsDiv = document.getElementById("searchResults");
     resultsDiv.classList.remove("hidden");
     resultsDiv.innerHTML = "";
-     if (res.data.status === 404) {
+    if(res.data.length==0) {
       resultsDiv.innerHTML = `<p class="text-red-500">No salons found offering "${searchService}".</p>`;
       return;
     }
@@ -112,6 +112,8 @@ document.getElementById("search_btn").addEventListener('click', async()=> {
         </div>
       `;
     });
+
+    document.getElementById("search").value="";
 
 
 

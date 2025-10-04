@@ -8,6 +8,7 @@ import SalonOwner from "./owner.model.js";
 import Review from "./review.model.js";
 import Payment from "./payment.model.js";
 import Booking from "./booking.model.js";
+import Admin from "./admin.model.js";
 
 
 // Salon → Services (1:M)
@@ -17,6 +18,11 @@ Service.belongsTo(Salon, { foreignKey: "salon_id" });
 // Salon → Staff (1:M)
 Salon.hasMany(Staff, { foreignKey: "salon_id", onDelete: "CASCADE" });
 Staff.belongsTo(Salon, { foreignKey: "salon_id" });
+
+// SalonOwner ↔ Salon (1:M)
+SalonOwner.hasMany(Salon, { foreignKey: "owner_id", onDelete: "CASCADE" });
+Salon.belongsTo(SalonOwner, { foreignKey: "owner_id" });
+
 
 // Staff ↔ Specialization (M:N via StaffSpecialization)
 Staff.belongsToMany(Specialization, {
@@ -41,7 +47,7 @@ Review.belongsTo(User, { foreignKey: "user_id" });
 Review.belongsTo(Salon, { foreignKey: "salon_id" });
 Review.belongsTo(Staff, { foreignKey: "staff_id" });
 
-Booking.hasOne(Review, { foreignKey: "booking_id" });
+Booking.hasOne(Review, { foreignKey: "booking_id", onDelete: "CASCADE" });
 User.hasMany(Review, { foreignKey: "user_id" });
 Salon.hasMany(Review, { foreignKey: "salon_id" });
 Staff.hasMany(Review, { foreignKey: "staff_id" });
@@ -61,11 +67,11 @@ Salon.hasMany(Booking, { foreignKey: "salon_id" });
 Booking.belongsTo(Salon, { foreignKey: "salon_id" });
 
 // Service ↔ Booking (1:M)
-Service.hasMany(Booking, { foreignKey: "service_id" });
+Service.hasMany(Booking, { foreignKey: "service_id", onDelete: "CASCADE" });
 Booking.belongsTo(Service, { foreignKey: "service_id" });
 
 // Staff ↔ Booking (1:M)
-Staff.hasMany(Booking, { foreignKey: "staff_id" });
+Staff.hasMany(Booking, { foreignKey: "staff_id", onDelete: "CASCADE" });
 Booking.belongsTo(Staff, { foreignKey: "staff_id" });
 
 // Admin ↔ Booking (1:M)
@@ -83,4 +89,4 @@ Booking.hasOne(Payment, { foreignKey: "booking_id" });
 
 
 
-export { Salon, Service, SalonOwner, StaffSpecialization, Specialization, Staff, User, Review, Payment, Booking };
+export { Salon, Service, SalonOwner, StaffSpecialization, Specialization, Staff, User, Review, Payment, Booking, Admin };

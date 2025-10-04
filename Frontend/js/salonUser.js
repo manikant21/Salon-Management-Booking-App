@@ -47,7 +47,7 @@ function renderSalonInfo(salon) {
   const header = document.querySelector(".container > div:first-child");
   header.querySelector("h1").textContent = salon.name;
   header.querySelector("p.text-gray-600").textContent = salon.address;
-  header.querySelector("p.text-yellow-500").textContent = `⭐ ${salon.rating || "N/A"}`;
+  header.querySelector("p.text-yellow-500").textContent = `${salon.averageRating || "N/A"}⭐ `;
 }
 
 function renderServices(services) {

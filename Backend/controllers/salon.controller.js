@@ -311,9 +311,9 @@ export const searchByServiceName = async (req, res, next) => {
       ],
     });
 
-    if (!services.length) {
-      return res.status(404).json({ message: "No salons found for this service" });
-    }
+    // if (!services.length) {
+    //   return res.status(404).json({ message: "No salons found for this service" });
+    // }
 
     res.json(services);
   } catch (err) {

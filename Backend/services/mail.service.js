@@ -21,7 +21,7 @@ export const sendPaymentConfirmationEmail = async (toEmail, booking) => {
       subject: "Payment and Booking Confirmed",
       html: `
         <h2>Payment Successful </h2>
-        <p>Hello ${booking.User.name},</p>
+        <p>Hello ${booking.User.username},</p>
         <p>Your payment of <b>₹${booking.Service.price}</b> for your booking has been successfully received.</p>
         
         <h3>Booking Details:</h3>

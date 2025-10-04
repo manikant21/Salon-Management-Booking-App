@@ -400,7 +400,8 @@ document.getElementById("createSpecForm").addEventListener("submit", async (e) =
             { salonId, name },
             { headers: { Authorization: token } }
         );
-        alert("spec added successfully!")
+        alert("spec added successfully!");
+        document.getElementById("createSpecForm").reset();
         document.getElementById("createSpecModal").classList.add("hidden");
         if (currentStaffId) {
             openSpecializationModal(currentStaffId); // refresh checkboxes for current staff
